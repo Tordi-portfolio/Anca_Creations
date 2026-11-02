@@ -1,0 +1,108 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ brand.name }} | {{ brand.tagline }} in {{ brand.city_short }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ brand.name }} is a creative studio in {{ brand.city }} offering custom gifts, Pen Bar, Keychain Bar, DIY Bar, parties and face painting. Bilingual English and Spanish.{% endblock %}">
+  <meta name="theme-color" content="#0b0f19">
+  <meta property="og:title" content="{{ brand.name }} | {{ brand.tagline }}">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="wordmark" href="{% url 'home' %}" aria-label="{{ brand.name }} home">
+        <span class="wordmark-main">anca</span><span class="wordmark-sub">creations</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="site-nav" class="site-nav" aria-label="Main">
+        {% url 'home' as home_url %}{% url 'about' as about_url %}{% url 'services' as services_url %}
+        {% url 'gallery' as gallery_url %}{% url 'contact' as contact_url %}
+        <a href="{{ home_url }}" {% if request.path == home_url %}aria-current="page"{% endif %}>Home</a>
+        <a href="{{ about_url }}" {% if request.path == about_url %}aria-current="page"{% endif %}>About</a>
+        <a href="{{ services_url }}" {% if request.path == services_url %}aria-current="page"{% endif %}>Experiences</a>
+        <a href="{{ gallery_url }}" {% if request.path == gallery_url %}aria-current="page"{% endif %}>Gallery</a>
+        <a href="{{ contact_url }}" {% if request.path == contact_url %}aria-current="page"{% endif %}>Contact</a>
+        {% if user.is_authenticated and user.is_staff %}
+          <a class="nav-staff" href="{% url 'dashboard' %}">Dashboard</a>
+        {% endif %}
+        <a class="btn btn-small btn-primary nav-cta" href="{{ brand.whatsapp_url }}" target="_blank" rel="noopener">Message us</a>
+      </nav>
+    </div>
+  </header>
+
+  {% if messages %}
+    <div class="toasts" role="status" aria-live="polite">
+      {% for message in messages %}
+        <div class="toast toast-{{ message.level_tag }}">
+          <span>{{ message }}</span>
+          <button type="button" class="toast-close" aria-label="Dismiss">&times;</button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="wordmark wordmark-light" href="{% url 'home' %}">
+          <span class="wordmark-main">anca</span><span class="wordmark-sub">creations</span>
+        </a>
+        <p>{{ brand.tagline }} in {{ brand.city }}. Create yours today. <em>¡Crea el tuyo hoy!</em></p>
+        <div class="socials">
+          <a href="{{ brand.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">{% include "partials/icon.html" with name="instagram" %}</a>
+          <a href="{{ brand.whatsapp_url }}" target="_blank" rel="noopener" aria-label="WhatsApp">{% include "partials/icon.html" with name="chat" %}</a>
+        </div>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <ul class="footer-links">
+          <li><a href="{% url 'about' %}">Our story</a></li>
+          <li><a href="{% url 'services' %}">Experiences</a></li>
+          <li><a href="{% url 'gallery' %}">Gallery</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Visit the studio</h3>
+        <address>
+          {{ brand.location_name }}<br>
+          {{ brand.street }}<br>
+          {{ brand.city }}<br>
+          <a href="{{ brand.maps_url }}" target="_blank" rel="noopener">Get directions</a>
+        </address>
+        {% if brand.email %}<p><a href="mailto:{{ brand.email }}">{{ brand.email }}</a></p>{% endif %}
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&copy; {{ current_year }} {{ brand.name }}. All rights reserved.</span>
+      <span class="footer-staff">
+        {% if user.is_authenticated and user.is_staff %}
+          <a href="{% url 'dashboard' %}">Dashboard</a> &middot;
+          <form method="post" action="{% url 'logout' %}" class="inline-form">{% csrf_token %}<button type="submit" class="linklike">Log out</button></form>
+        {% else %}
+          <a href="{% url 'login' %}">Staff login</a>
+        {% endif %}
+      </span>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/main.js' %}" defer></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

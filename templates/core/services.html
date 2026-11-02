@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Experiences &amp; Custom Gifts | {{ brand.name }}{% endblock %}
+{% block meta_description %}Pen Bar, Keychain Bar, DIY Bar, parties, face painting and custom gifts at {{ brand.name }} in {{ brand.city }}.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="hero-bg" aria-hidden="true"><span class="blob blob-2"></span><span class="blob blob-3"></span></div>
+  <div class="container narrow">
+    <p class="eyebrow eyebrow-light">Experiences &amp; custom gifts</p>
+    <h1 class="display display-xl">Pick your way to create.</h1>
+    <p class="lead lead-light">Hands-on bars, party activities and personalised gifts, all designed so you can make something that is truly yours.</p>
+    <div class="chip-row">
+      {% for s in services %}<a class="chip" href="#{{ s.slug }}">{{ s.name }}</a>{% endfor %}
+    </div>
+  </div>
+</section>
+
+{% for s in services %}
+<section class="section service{% cycle '' ' section-tint' %}" id="{{ s.slug }}">
+  <div class="container service-grid">
+    <div class="service-media reveal" aria-hidden="true">
+      <span class="service-icon">{% include "partials/icon.html" with name=s.icon %}</span>
+      <span class="service-index">0{{ forloop.counter }}</span>
+    </div>
+    <div class="reveal">
+      <p class="eyebrow">{{ s.name }}</p>
+      <h2 class="display">{{ s.tagline }}</h2>
+      <p class="lead">{{ s.summary }}</p>
+      <div class="prose">
+        {% for para in s.paragraphs %}<p>{{ para }}</p>{% endfor %}
+      </div>
+      <h3 class="mini-title">Perfect for</h3>
+      <ul class="check-list">
+        {% for item in s.perfect_for %}<li>{% include "partials/icon.html" with name="check" %} {{ item }}</li>{% endfor %}
+      </ul>
+      <a class="btn btn-primary" href="{% url 'contact' %}">Ask about {{ s.name }}</a>
+    </div>
+  </div>
+</section>
+{% endfor %}
+
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow eyebrow-light">The process</p>
+      <h2 class="display display-light">Simple from start to finish.</h2>
+    </div>
+    <ol class="steps steps-dark">
+      {% for step in steps %}
+      <li class="step reveal">
+        <span class="step-num">{{ forloop.counter }}</span>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.text }}</p>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="container cta-inner reveal">
+    <h2 class="display display-light">Not sure what to choose?</h2>
+    <p class="lead lead-light">Tell us about the occasion and we will recommend the perfect experience.</p>
+    <div class="hero-actions center">
+      <a class="btn btn-primary btn-lg" href="{% url 'contact' %}">Talk to us</a>
+      <a class="btn btn-ghost btn-lg" href="{{ brand.whatsapp_url }}" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

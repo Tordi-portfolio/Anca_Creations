@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Our Story | {{ brand.name }}{% endblock %}
+{% block meta_description %}Learn about {{ brand.name }}, a bilingual creative studio in {{ brand.city }} dedicated to custom gifts, hands-on creative bars and unforgettable celebrations.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="hero-bg" aria-hidden="true"><span class="blob blob-1"></span><span class="blob blob-2"></span></div>
+  <div class="container narrow">
+    <p class="eyebrow eyebrow-light">Our story</p>
+    <h1 class="display display-xl">A studio where creativity feels like a celebration.</h1>
+    <p class="lead lead-light">{{ brand.name }} began with a simple belief: the things we make with our own hands mean the most.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container split split-top">
+    <div class="reveal">
+      <p class="eyebrow">Who we are</p>
+      <h2 class="display">More than a gift shop. A place to make something together.</h2>
+    </div>
+    <div class="prose reveal">
+      <p>
+        {{ brand.name }} is a creative studio in the {{ brand.location_name }} on South Main Street in downtown {{ brand.city_short }}.
+        We specialise in <strong>custom gifts and creative experiences</strong>: build-your-own bars, party activities, face painting and personalised pieces that carry a story.
+      </p>
+      <p>
+        Everything we do is designed to turn ordinary moments into something memorable. A child proudly showing off the keychain they designed, friends laughing over their pens at a birthday,
+        a gift that makes someone say, "You made this for me?" Those moments are exactly why we do what we do.
+      </p>
+      <p>
+        We are a bilingual team, and our doors are open to everyone. Whether you speak English, Spanish or a bit of both, you will be greeted warmly and helped every step of the way.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section section-tint">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">What we believe</p>
+      <h2 class="display">The values behind every creation.</h2>
+    </div>
+    <div class="card-grid card-grid-2">
+      {% for v in values %}
+      <article class="card reveal">
+        <span class="card-num">0{{ forloop.counter }}</span>
+        <h3>{{ v.title }}</h3>
+        <p>{{ v.text }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container split split-top">
+    <div class="reveal">
+      <p class="eyebrow">The experience</p>
+      <h2 class="display">What to expect when you visit.</h2>
+    </div>
+    <div class="prose reveal">
+      <p>
+        When you walk in, you will find a bright, colourful space with creative stations ready for you to explore.
+        Pick your experience, browse the options and begin designing. Our team is close by to answer questions, share ideas or simply cheer you on.
+      </p>
+      <p>
+        Visiting with a group? Planning a party? Celebrating something special? Let us know ahead of time and we will help you shape an experience that fits your people and your plans.
+      </p>
+      <ul class="check-list">
+        <li>{% include "partials/icon.html" with name="check" %} Friendly, patient guidance for every age and skill level</li>
+        <li>{% include "partials/icon.html" with name="check" %} Options for individuals, families, parties and groups</li>
+        <li>{% include "partials/icon.html" with name="check" %} Service in English and Spanish</li>
+        <li>{% include "partials/icon.html" with name="check" %} Handmade keepsakes you can take home the same day</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow eyebrow-light">What makes us different</p>
+      <h2 class="display display-light">Details that make the difference.</h2>
+    </div>
+    <div class="pillar-grid pillar-dark">
+      {% for p in pillars %}
+      <div class="pillar reveal">
+        <span class="pillar-icon">{% include "partials/icon.html" with name=p.icon %}</span>
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.text }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container split split-top">
+    <div class="reveal">
+      <p class="eyebrow">Part of the community</p>
+      <h2 class="display">Proud to be a {{ brand.city_short }} original.</h2>
+    </div>
+    <div class="prose reveal">
+      <p>
+        Being part of the {{ brand.location_name }} means being part of a community of makers, small businesses and neighbours.
+        We love supporting local events, welcoming school and community groups and celebrating the milestones of the families who call {{ brand.city_short }} home.
+      </p>
+      <p>
+        If you are planning something and would like us to be part of it, we would love to hear from you.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="{% url 'contact' %}">Get in touch</a>
+        <a class="btn btn-outline" href="{{ brand.instagram_url }}" target="_blank" rel="noopener">Follow us on Instagram</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

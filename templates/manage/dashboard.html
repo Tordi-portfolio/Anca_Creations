@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | {{ brand.name }}{% endblock %}
+{% block body_class %}manage{% endblock %}
+
+{% block content %}
+{% include "manage/_nav.html" %}
+<section class="manage-wrap">
+  <div class="container">
+    <header class="manage-head">
+      <div>
+        <h1 class="h2">Welcome back{% if user.first_name %}, {{ user.first_name }}{% endif %}.</h1>
+        <p class="muted">Upload photos and videos about the brand and see what visitors are sending you.</p>
+      </div>
+      <a class="btn btn-primary" href="{% url 'media_upload' %}">{% include "partials/icon.html" with name="upload" %} Upload media</a>
+    </header>
+
+    <div class="stat-grid">
+      <div class="stat"><span class="stat-num">{{ total }}</span><span class="stat-label">Total items</span></div>
+      <div class="stat"><span class="stat-num">{{ image_count }}</span><span class="stat-label">Photos</span></div>
+      <div class="stat"><span class="stat-num">{{ video_count }}</span><span class="stat-label">Videos</span></div>
+      <div class="stat"><span class="stat-num">{{ featured_count }}</span><span class="stat-label">On home page</span></div>
+      <a class="stat stat-link{% if unread_count %} stat-alert{% endif %}" href="{% url 'messages_manage' %}"><span class="stat-num">{{ unread_count }}</span><span class="stat-label">Unread messages</span></a>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2 class="h3">Recent uploads</h2>
+        <a class="text-link" href="{% url 'media_list' %}">Manage all {% include "partials/icon.html" with name="arrow" %}</a>
+      </div>
+      {% if recent %}
+        <div class="thumb-grid">
+          {% for item in recent %}
+          <a class="thumb" href="{% url 'media_edit' item.pk %}">
+            {% if item.is_video %}<video src="{{ item.file.url }}#t=0.1" preload="metadata" muted playsinline></video>
+            {% else %}<img src="{{ item.file.url }}" alt="{{ item.title }}" loading="lazy">{% endif %}
+            <span>{{ item.title }}</span>
+          </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state empty-state-flat">
+          <p>No media yet. Upload your first photo or video to bring the gallery to life.</p>
+          <a class="btn btn-primary" href="{% url 'media_upload' %}">Upload now</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

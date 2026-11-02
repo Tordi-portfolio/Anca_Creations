@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <span class="blob blob-1"></span><span class="blob blob-2"></span><span class="blob blob-3"></span>
+  </div>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow eyebrow-light">{{ brand.tagline }} &middot; {{ brand.city_short }}, VA</p>
+      <h1 class="display display-xl">Gifts made by you.<br><span class="grad-text">Memories made with us.</span></h1>
+      <p class="lead lead-light">
+        {{ brand.name }} is a creative studio where you design your own pens, keychains and keepsakes,
+        celebrate with unforgettable parties and bring ideas to life with custom gifts. No experience needed. Just bring your imagination.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="{% url 'services' %}">Explore experiences {% include "partials/icon.html" with name="arrow" %}</a>
+        <a class="btn btn-ghost btn-lg" href="{{ brand.whatsapp_url }}" target="_blank" rel="noopener">Chat on WhatsApp</a>
+      </div>
+      <p class="hero-note">{% include "partials/icon.html" with name="pin" %} {{ brand.location_name }} &middot; {{ brand.street }}, {{ brand.city }}</p>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="float-card fc-1">{% include "partials/icon.html" with name="pen" %}<div><strong>Pen Bar</strong><span>Design your own</span></div></div>
+      <div class="float-card fc-2">{% include "partials/icon.html" with name="key" %}<div><strong>Keychain Bar</strong><span>Mix &amp; match</span></div></div>
+      <div class="float-card fc-3">{% include "partials/icon.html" with name="party" %}<div><strong>Parties</strong><span>Celebrate creatively</span></div></div>
+      <div class="float-card fc-4">{% include "partials/icon.html" with name="palette" %}<div><strong>Face Paint</strong><span>Colour &amp; sparkle</span></div></div>
+      <div class="orb"><span>create<br>yours<br>today</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Custom Gifts</span><span>Pen Bar</span><span>Keychain Bar</span><span>DIY Bar</span><span>Parties</span><span>Face Paint</span><span>Bilingual</span>
+    <span>Custom Gifts</span><span>Pen Bar</span><span>Keychain Bar</span><span>DIY Bar</span><span>Parties</span><span>Face Paint</span><span>Bilingual</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="section">
+  <div class="container split">
+    <div class="reveal">
+      <p class="eyebrow">Welcome to the studio</p>
+      <h2 class="display">A creative space built around the people you love.</h2>
+    </div>
+    <div class="reveal prose">
+      <p>
+        At {{ brand.name }}, we believe the most meaningful gifts are the ones with a little of <em>you</em> in them.
+        That is why our studio is built around hands-on experiences: you choose, you design, you create, and you leave with something no one else in the world has.
+      </p>
+      <p>
+        Located in the heart of {{ brand.city_short }} at the {{ brand.location_name }}, we welcome families, friends, teams and curious visitors of every age.
+        Whether you pop in for a quick keychain, plan a birthday celebration or want a thoughtful custom gift, our friendly team is here to make it easy, fun and personal.
+      </p>
+      <p>
+        We are proudly bilingual, so everyone is welcome in English or Spanish. <em>Bienvenidos. Crea el tuyo hoy.</em>
+      </p>
+      <a class="text-link" href="{% url 'about' %}">Read our story {% include "partials/icon.html" with name="arrow" %}</a>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCES -->
+<section class="section section-tint">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">What we do</p>
+      <h2 class="display">Experiences you can touch, wear and keep.</h2>
+      <p class="lead">From a quick creative stop to a full celebration, there is a way to create with us for every mood and every occasion.</p>
+    </div>
+    <div class="card-grid">
+      {% for s in services %}
+      <article class="card reveal">
+        <span class="card-icon">{% include "partials/icon.html" with name=s.icon %}</span>
+        <h3>{{ s.name }}</h3>
+        <p class="card-tagline">{{ s.tagline }}</p>
+        <p>{{ s.summary }}</p>
+        <a class="text-link" href="{% url 'services' %}#{{ s.slug }}">Learn more {% include "partials/icon.html" with name="arrow" %}</a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">How it works</p>
+      <h2 class="display">From idea to keepsake in four easy steps.</h2>
+    </div>
+    <ol class="steps">
+      {% for step in steps %}
+      <li class="step reveal">
+        <span class="step-num">{{ forloop.counter }}</span>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.text }}</p>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<!-- FEATURED GALLERY -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow eyebrow-light">Inside the studio</p>
+      <h2 class="display display-light">Moments we've helped create.</h2>
+      <p class="lead lead-light">A peek at recent creations, parties and happy faces from the studio.</p>
+    </div>
+
+    {% if featured %}
+      <div class="gallery-grid">
+        {% for item in featured %}{% include "gallery/_card.html" %}{% endfor %}
+      </div>
+      <div class="center-actions reveal">
+        <a class="btn btn-light" href="{% url 'gallery' %}">View the full gallery</a>
+        <a class="btn btn-ghost" href="{{ brand.instagram_url }}" target="_blank" rel="noopener">Follow @{{ brand.instagram_handle }}</a>
+      </div>
+    {% else %}
+      <div class="empty-state reveal">
+        <p>Our gallery is being filled with fresh photos and videos. In the meantime, see our latest creations on Instagram.</p>
+        <a class="btn btn-light" href="{{ brand.instagram_url }}" target="_blank" rel="noopener">@{{ brand.instagram_handle }} on Instagram</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Why {{ brand.short_name }}</p>
+      <h2 class="display">Creative, welcoming and unmistakably local.</h2>
+    </div>
+    <div class="pillar-grid">
+      {% for p in pillars %}
+      <div class="pillar reveal">
+        <span class="pillar-icon">{% include "partials/icon.html" with name=p.icon %}</span>
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.text }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- BILINGUAL BAND -->
+<section class="band">
+  <div class="container band-inner reveal">
+    <div>
+      <p class="eyebrow eyebrow-dark">Bilingual / Bilingüe</p>
+      <h2 class="display">Crea el tuyo hoy.</h2>
+      <p class="lead">Somos un estudio creativo bilingüe en {{ brand.city_short }}. Venga a diseñar un bolígrafo, un llavero o un regalo personalizado, o celebre su próxima fiesta con nosotros.</p>
+    </div>
+    <a class="btn btn-dark btn-lg" href="{{ brand.whatsapp_url }}" target="_blank" rel="noopener">Escríbanos por WhatsApp</a>
+  </div>
+</section>
+
+<!-- REVIEWS + VISIT -->
+<section class="section">
+  <div class="container split split-top">
+    <div class="reveal">
+      <p class="eyebrow">Hear it from our customers</p>
+      <h2 class="display">Real stories, shared by real guests.</h2>
+      <p class="lead">Our guests love sharing what they made. See their photos and kind words in the Reviews highlight on our Instagram.</p>
+      <a class="btn btn-outline" href="{{ brand.instagram_url }}" target="_blank" rel="noopener">See reviews on Instagram</a>
+    </div>
+    <div class="visit-card reveal">
+      <h3>Visit the studio</h3>
+      <p class="visit-line">{% include "partials/icon.html" with name="pin" %}<span>{{ brand.location_name }}<br>{{ brand.street }}<br>{{ brand.city }}</span></p>
+      <p class="visit-line">{% include "partials/icon.html" with name="chat" %}<span>Message us on WhatsApp to confirm availability or plan a visit.</span></p>
+      <div class="visit-actions">
+        <a class="btn btn-primary" href="{{ brand.maps_url }}" target="_blank" rel="noopener">Get directions</a>
+        <a class="btn btn-outline" href="{% url 'contact' %}">Contact us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container cta-inner reveal">
+    <h2 class="display display-light">Ready to create something you'll love?</h2>
+    <p class="lead lead-light">Tell us about your idea, your event or the person you are celebrating. We'll take it from there.</p>
+    <div class="hero-actions center">
+      <a class="btn btn-primary btn-lg" href="{% url 'contact' %}">Start your order</a>
+      <a class="btn btn-ghost btn-lg" href="{% url 'services' %}">Browse experiences</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

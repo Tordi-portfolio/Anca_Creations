@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Access denied | {{ brand.name }}{% endblock %}
+{% block content %}
+<section class="section section-center">
+  <div class="container narrow">
+    <p class="eyebrow">Error 403</p>
+    <h1 class="display">This area is for staff only.</h1>
+    <p class="lead">You're signed in, but your account doesn't have permission to manage the website.</p>
+    <a class="btn btn-primary" href="{% url 'home' %}">Back to home</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% with current=request.resolver_match.url_name %}
+<div class="manage-bar">
+  <div class="container manage-bar-inner">
+    <nav class="manage-tabs" aria-label="Dashboard">
+      <a href="{% url 'dashboard' %}" {% if current == 'dashboard' %}aria-current="page"{% endif %}>{% include "partials/icon.html" with name="grid" %} Overview</a>
+      <a href="{% url 'media_list' %}" {% if current == 'media_list' or current == 'media_edit' or current == 'media_delete' %}aria-current="page"{% endif %}>{% include "partials/icon.html" with name="image" %} Media</a>
+      <a href="{% url 'media_upload' %}" {% if current == 'media_upload' %}aria-current="page"{% endif %}>{% include "partials/icon.html" with name="upload" %} Upload</a>
+      <a href="{% url 'messages_manage' %}" {% if current == 'messages_manage' %}aria-current="page"{% endif %}>{% include "partials/icon.html" with name="inbox" %} Messages</a>
+      <a href="{% url 'password_change' %}" {% if current == 'password_change' %}aria-current="page"{% endif %}>{% include "partials/icon.html" with name="lock" %} Password</a>
+    </nav>
+    <span class="manage-user">Signed in as <strong>{{ user.get_username }}</strong></span>
+  </div>
+</div>
+{% endwith %}

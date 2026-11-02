@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Messages | {{ brand.name }}{% endblock %}
+{% block body_class %}manage{% endblock %}
+
+{% block content %}
+{% include "manage/_nav.html" %}
+<section class="manage-wrap">
+  <div class="container narrow">
+    <header class="manage-head">
+      <div>
+        <h1 class="h2">Customer messages</h1>
+        <p class="muted">Enquiries sent from the contact form.</p>
+      </div>
+    </header>
+
+    {% if contact_messages %}
+      <div class="msg-list">
+        {% for m in contact_messages %}
+        <article class="msg{% if not m.is_read %} msg-unread{% endif %}">
+          <div class="msg-top">
+            <div>
+              <h3>{{ m.name }}{% if not m.is_read %} <span class="pill">New</span>{% endif %}</h3>
+              <p class="muted small">
+                <a href="mailto:{{ m.email }}">{{ m.email }}</a>{% if m.phone %} &middot; {{ m.phone }}{% endif %}
+                &middot; {{ m.get_interest_display }} &middot; {{ m.created_at|date:"M j, Y g:i A" }}
+              </p>
+            </div>
+          </div>
+          <p class="msg-body">{{ m.message|linebreaksbr }}</p>
+          <div class="msg-actions">
+            <form method="post" action="{% url 'message_toggle' m.pk %}" class="inline-form">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <button class="btn btn-small btn-outline" type="submit">{% if m.is_read %}Mark unread{% else %}Mark read{% endif %}</button>
+            </form>
+            <form method="post" action="{% url 'message_delete' m.pk %}" class="inline-form" data-confirm="Delete this message permanently?">
+              {% csrf_token %}
+              <button class="btn btn-small btn-danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% include "partials/pagination.html" %}
+    {% else %}
+      <div class="empty-state"><p>No messages yet. New enquiries will show up here.</p></div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

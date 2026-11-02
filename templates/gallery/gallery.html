@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Gallery | {{ brand.name }}{% endblock %}
+{% block meta_description %}Photos and videos from {{ brand.name }}: parties, Pen Bar, Keychain Bar, DIY Bar, face painting and custom gifts in {{ brand.city }}.{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-short">
+  <div class="hero-bg" aria-hidden="true"><span class="blob blob-2"></span><span class="blob blob-1"></span></div>
+  <div class="container narrow">
+    <p class="eyebrow eyebrow-light">Gallery</p>
+    <h1 class="display display-xl">See what's being made.</h1>
+    <p class="lead lead-light">Photos and videos from our parties, bars and custom creations.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="filters reveal">
+      <div class="chip-row">
+        <a class="chip{% if not current_category %} is-active{% endif %}" href="{% url 'gallery' %}{% if current_type %}?type={{ current_type }}{% endif %}">All</a>
+        {% for value, label in categories %}
+          <a class="chip{% if current_category == value %} is-active{% endif %}" href="?category={{ value }}{% if current_type %}&amp;type={{ current_type }}{% endif %}">{{ label }}</a>
+        {% endfor %}
+      </div>
+      <div class="chip-row">
+        <a class="chip chip-alt{% if not current_type %} is-active{% endif %}" href="?{% if current_category %}category={{ current_category }}{% endif %}">Photos &amp; videos</a>
+        <a class="chip chip-alt{% if current_type == 'image' %} is-active{% endif %}" href="?type=image{% if current_category %}&amp;category={{ current_category }}{% endif %}">Photos</a>
+        <a class="chip chip-alt{% if current_type == 'video' %} is-active{% endif %}" href="?type=video{% if current_category %}&amp;category={{ current_category }}{% endif %}">Videos</a>
+      </div>
+    </div>
+
+    {% if items %}
+      <div class="gallery-grid">
+        {% for item in items %}{% include "gallery/_card.html" %}{% endfor %}
+      </div>
+      {% include "partials/pagination.html" %}
+    {% else %}
+      <div class="empty-state">
+        <h3>Nothing here yet</h3>
+        <p>We're adding new photos and videos all the time. Check back soon or follow us on Instagram.</p>
+        <a class="btn btn-primary" href="{{ brand.instagram_url }}" target="_blank" rel="noopener">@{{ brand.instagram_handle }}</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,12 @@
+<figure class="g-item reveal" data-lightbox data-type="{{ item.media_type }}" data-src="{{ item.file.url }}" data-title="{{ item.title }}" data-caption="{{ item.description|truncatechars:200 }}" tabindex="0" role="button" aria-label="Open {{ item.title }}">
+  {% if item.is_video %}
+    <video src="{{ item.file.url }}#t=0.1" preload="metadata" muted playsinline></video>
+    <span class="g-badge">{% include "partials/icon.html" with name="video" %} Video</span>
+  {% else %}
+    <img src="{{ item.file.url }}" alt="{{ item.title }}" loading="lazy">
+  {% endif %}
+  <figcaption>
+    <span>{{ item.get_category_display }}</span>
+    <strong>{{ item.title }}</strong>
+  </figcaption>
+</figure>

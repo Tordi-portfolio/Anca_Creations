@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Page not found | {{ brand.name }}{% endblock %}
+{% block content %}
+<section class="section section-center">
+  <div class="container narrow">
+    <p class="eyebrow">Error 404</p>
+    <h1 class="display">We couldn't find that page.</h1>
+    <p class="lead">The page you're looking for may have moved. Let's get you back to something beautiful.</p>
+    <a class="btn btn-primary" href="{% url 'home' %}">Back to home</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Delete item | {{ brand.name }}{% endblock %}
+{% block body_class %}manage{% endblock %}
+
+{% block content %}
+{% include "manage/_nav.html" %}
+<section class="manage-wrap">
+  <div class="container narrow">
+    <div class="panel">
+      <h1 class="h2">Delete "{{ object.title }}"?</h1>
+      <p class="muted">This permanently removes the {{ object.get_media_type_display|lower }} from the website. This cannot be undone.</p>
+      <div class="current-media">
+        {% if object.is_video %}<video src="{{ object.file.url }}" controls preload="metadata"></video>
+        {% else %}<img src="{{ object.file.url }}" alt="{{ object.title }}">{% endif %}
+      </div>
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-actions">
+          <button class="btn btn-danger btn-lg" type="submit">Yes, delete</button>
+          <a class="btn btn-outline btn-lg" href="{% url 'media_list' %}">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

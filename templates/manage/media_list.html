@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Manage media | {{ brand.name }}{% endblock %}
+{% block body_class %}manage{% endblock %}
+
+{% block content %}
+{% include "manage/_nav.html" %}
+<section class="manage-wrap">
+  <div class="container">
+    <header class="manage-head">
+      <div>
+        <h1 class="h2">Media library</h1>
+        <p class="muted">{{ paginator.count }} item{{ paginator.count|pluralize }}</p>
+      </div>
+      <a class="btn btn-primary" href="{% url 'media_upload' %}">{% include "partials/icon.html" with name="upload" %} Upload media</a>
+    </header>
+
+    <form class="toolbar" method="get">
+      <input type="search" name="q" value="{{ q }}" placeholder="Search by title or description" aria-label="Search">
+      <select name="category" aria-label="Category">
+        <option value="">All categories</option>
+        {% for value, label in categories %}<option value="{{ value }}"{% if current_category == value %} selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+      <button class="btn btn-outline" type="submit">Filter</button>
+    </form>
+
+    {% if items %}
+      <div class="manage-grid">
+        {% for item in items %}
+        <article class="manage-card">
+          <div class="manage-thumb">
+            {% if item.is_video %}<video src="{{ item.file.url }}#t=0.1" preload="metadata" muted playsinline></video><span class="g-badge">Video</span>
+            {% else %}<img src="{{ item.file.url }}" alt="{{ item.title }}" loading="lazy">{% endif %}
+            {% if item.is_featured %}<span class="star-badge">Featured</span>{% endif %}
+          </div>
+          <div class="manage-body">
+            <h3>{{ item.title }}</h3>
+            <p class="muted small">{{ item.get_category_display }} &middot; {{ item.created_at|date:"M j, Y" }}</p>
+            <div class="manage-actions">
+              <a class="btn btn-small btn-outline" href="{% url 'media_edit' item.pk %}">Edit</a>
+              <a class="btn btn-small btn-danger" href="{% url 'media_delete' item.pk %}">Delete</a>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% include "partials/pagination.html" %}
+    {% else %}
+      <div class="empty-state">
+        <p>No media found.</p>
+        <a class="btn btn-primary" href="{% url 'media_upload' %}">Upload photos &amp; videos</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

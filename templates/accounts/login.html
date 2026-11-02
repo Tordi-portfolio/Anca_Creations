@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Staff login | {{ brand.name }}{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+  <div class="hero-bg" aria-hidden="true"><span class="blob blob-1"></span><span class="blob blob-2"></span></div>
+  <div class="auth-card">
+    <span class="auth-icon">{% include "partials/icon.html" with name="lock" %}</span>
+    <h1>Staff login</h1>
+    <p class="muted">Sign in to manage the {{ brand.name }} gallery.</p>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+      {% include "partials/field.html" with field=form.username %}
+      {% include "partials/field.html" with field=form.password %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <button class="btn btn-primary btn-block btn-lg" type="submit">Sign in</button>
+    </form>
+    <p class="auth-foot"><a href="{% url 'home' %}">&larr; Back to website</a></p>
+  </div>
+</section>
+{% endblock %}
